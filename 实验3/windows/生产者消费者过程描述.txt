@@ -1,0 +1,17 @@
+生产者
+P(empty);       //申请空闲缓冲区资源
+P(mutex);          //申请对缓冲区修改的权限
+strcpy(str_buffer[tail] , str);   //在空缓冲区填入字符串
+tail = (tail + 1) % buffer_size   //尾部指针递增
+V(full);        //填充了一个缓冲区，释放填充缓冲区信号量
+V(mutex);          //释放修改权限
+
+
+消费者：
+P(full);        //申请已填充缓冲区资源
+P(mutex);          //申请对缓冲区修改的权限
+str = str_buffer[head]    //从已填充缓冲区读取字符串
+str_buffer[head][0] = '\0';        //清空缓冲区内的字符串
+head = (head + 1) % buffer_size   //头部指针递增
+V(empty);       //读取了一个缓冲区，释放空缓冲区信号量
+V(mutex);          //释放修改权限
